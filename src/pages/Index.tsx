@@ -82,7 +82,7 @@ const Index = () => {
         <div className="container flex items-center justify-between h-16 mx-auto px-4 md:px-8">
           <div className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/1d37e508-0689-425c-b3c4-68deb45e2317.png" 
+              src="/images/logo.png" 
               alt="Memory Lab Logo" 
               className="h-12 w-12"
             />
@@ -146,7 +146,7 @@ const Index = () => {
               </div>
               
               <h1 className="hero-heading text-4xl md:text-6xl font-bold tracking-tight md:max-w-3xl leading-tight animate-fade-in-delay-200">
-                職涯形象，從一張<span className="text-primary relative">好照片
+                職涯形象，從一張<span className="text-primary relative">好照片<br/>
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-primary/50"></span>
                 </span>開始
               </h1>
@@ -159,25 +159,25 @@ const Index = () => {
                 <Button size="lg" className="px-8 gap-2 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
                   立即預約 <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="px-8 border-white text-white hover:bg-white/20 transition-all duration-300" asChild>
+                <Button size="lg" variant="outline" className="px-8 border-primary text-primary hover:bg-primary/10 transition-all duration-300" asChild>
                   <a href="#gallery">瀏覽作品</a>
                 </Button>
               </div>
             </div>
             
-            <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
+            {/* <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
               <div 
-                className="relative w-64 h-64 md:w-96 md:h-96 animate-scale"
+                className="relative w-80 h-80 md:w-[20rem] md:h-[30rem] animate-scale"
                 style={{ transform: `translateY(${-scrollPosition * 0.05}px)` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl"></div>
                 <img 
-                  src="/lovable-uploads/1d37e508-0689-425c-b3c4-68deb45e2317.png" 
+                  src="/images/man.png" 
                   alt="Memory Lab Logo" 
                   className="w-full h-full object-contain relative z-10"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         
@@ -654,7 +654,7 @@ const Index = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-lg">電話</p>
-                    <p className="text-gray-600 mt-1">+886 900 123 456</p>
+                    <p className="text-gray-600 mt-1">0902-258-817</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -663,7 +663,7 @@ const Index = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-lg">社群媒體</p>
-                    <p className="text-gray-600 mt-1">Instagram: @memorylab</p>
+                    <p className="text-gray-600 mt-1">Instagram: @memorylab.vip</p>
                   </div>
                 </div>
               </div>
@@ -701,7 +701,7 @@ const Index = () => {
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-white/10 p-1.5 rounded-lg">
                   <img 
-                    src="/lovable-uploads/1d37e508-0689-425c-b3c4-68deb45e2317.png" 
+                    src="/images/logo.png" 
                     alt="Memory Lab Logo" 
                     className="h-10 w-10"
                   />
@@ -743,9 +743,9 @@ const Index = () => {
               <h3 className="font-semibold text-xl mb-6">聯絡我們</h3>
               <p className="text-gray-300 leading-relaxed">
                 網站：memorylab.vip<br />
-                Instagram: @memorylab<br />
+                Instagram: @memorylab.vip<br />
                 Email: contact@memorylab.vip<br />
-                電話：+886 900 123 456
+                電話：0902-258-817
               </p>
             </div>
           </div>

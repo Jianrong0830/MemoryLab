@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -9,7 +8,7 @@ type PhotoType = {
   id: number;
   src: string;
   alt: string;
-  tag: 'portrait' | 'professional' | 'creative';
+  tag: 'professional' | 'personal' | 'couple';
   tagLabel: string;
   description: string;
   package: string;
@@ -18,68 +17,121 @@ type PhotoType = {
 // Photo gallery data
 const photos: PhotoType[] = [
   {
+    id: 7,
+    src: "/images/個人寫真/7DEFDEC2-864F-4BCD-A437-6535DBCE1361.png",
+    alt: "個人寫真 - 展現真實自我",
+    tag: "personal",
+    tagLabel: "個人寫真",
+    description: "展現真實自我，捕捉每個獨特瞬間",
+    package: "個人寫真"
+  },
+  {
     id: 1,
-    src: "/lovable-uploads/9d61c56a-8744-45c1-943d-ba69a1d84d32.png",
-    alt: "Professional portrait of a man in a suit",
+    src: "/images/形象照/FEA84252-D13B-4A5D-8E26-26848474DFF7.jpeg",
+    alt: "形象照 - 專業形象提升",
     tag: "professional",
-    tagLabel: "形象照方案",
-    description: "專業形象照，適合履歷、LinkedIn等商業場合使用",
-    package: "形象照方案"
+    tagLabel: "形象照",
+    description: "專業形象照，助您提升職場形象",
+    package: "專業形象照"
+  },
+  {
+    id: 13,
+    src: "/images/情侶寫真/26B3E97B-EDDA-405F-B806-F4D208C66EA2.jpeg",
+    alt: "情侶寫真 - 捕捉愛的故事",
+    tag: "couple",
+    tagLabel: "情侶寫真",
+    description: "捕捉愛的故事，紀錄甜蜜時光",
+    package: "情侶寫真"
   },
   {
     id: 2,
-    src: "/lovable-uploads/fb08f974-ceab-4f61-8ace-0a52b863e27d.png",
-    alt: "Casual portrait of a young man in casual clothing",
-    tag: "portrait",
-    tagLabel: "寫真方案",
-    description: "自然風格寫真，展現真實的自我",
-    package: "寫真方案"
+    src: "/images/形象照/5AC55731-8BFA-49D4-909B-D803C7BF4FA7_1_105_c.jpeg",
+    alt: "形象照 - 自然風格",
+    tag: "professional",
+    tagLabel: "形象照",
+    description: "自然風格形象照，展現專業與親和力",
+    package: "休閒形象照"
   },
   {
-    id: 3,
-    src: "/lovable-uploads/e1c897df-d08c-4208-940f-c07551786266.png",
-    alt: "Creative portrait with a man sitting",
-    tag: "portrait",
-    tagLabel: "寫真方案",
-    description: "富有故事性的生活風格寫真",
-    package: "寫真方案"
+    id: 11,
+    src: "/images/情侶寫真/F0FDEB6E-15A2-4B76-8B2B-71FDFD2C1FB3.jpeg",
+    alt: "情侶寫真 - 記錄動人瞬間",
+    tag: "couple",
+    tagLabel: "情侶寫真",
+    description: "記錄每個動人瞬間，見證愛的旅程",
+    package: "情侶寫真"
   },
-  {
-    id: 4,
-    src: "/lovable-uploads/9b23681f-47ce-465c-91f4-6cd2c8d642de.png",
-    alt: "Creative fashion portrait with green background",
-    tag: "creative",
-    tagLabel: "創意方案",
-    description: "特殊主題創意拍攝，展現獨特個人風格",
-    package: "客製方案"
-  },
-  // Empty slots for future photos
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-    alt: "Portrait placeholder",
-    tag: "portrait",
-    tagLabel: "寫真方案",
-    description: "自然風格寫真，展現真實的自我",
-    package: "寫真方案"
+    src: "/images/形象照/E16E6E1A-DAC3-4D91-904D-0BA9C6500882.jpeg",
+    alt: "形象照 - 個性化展現",
+    tag: "professional",
+    tagLabel: "形象照",
+    description: "個性化形象照，展現獨特魅力",
+    package: "個性形象照"
+  },
+  {
+    id: 9,
+    src: "/images/個人寫真/E592A00D-170F-448D-AB8C-347FB7BFCD5B.jpeg",
+    alt: "個人寫真 - 捕捉自然之美",
+    tag: "personal",
+    tagLabel: "個人寫真",
+    description: "捕捉自然之美，展現最真實的一面",
+    package: "個人寫真"
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    alt: "Professional portrait placeholder",
+    src: "/images/形象照/07AF62D0-B623-4B38-95BE-7874CFD67B6D.jpeg",
+    alt: "形象照 - 商業場合專用",
     tag: "professional",
-    tagLabel: "形象照方案",
-    description: "專業形象照，適合履歷、LinkedIn等商業場合使用",
-    package: "形象照方案"
+    tagLabel: "形象照",
+    description: "專業形象照，適合商業場合使用",
+    package: "個性形象照"
   },
+  {
+    id: 14,
+    src: "/images/情侶寫真/9DDA9574-3602-4B44-97AF-958A1043C2E8.jpeg",
+    alt: "情侶寫真 - 捕捉甜蜜細節",
+    tag: "couple",
+    tagLabel: "情侶寫真",
+    description: "甜蜜寫真，捕捉愛的每個細節",
+    package: "情侶寫真"
+  },
+  {
+    id: 8,
+    src: "/images/個人寫真/AD908806-86BF-40BB-A6C5-2311353C3135.jpeg",
+    alt: "個人寫真 - 展現自信與個性",
+    tag: "personal",
+    tagLabel: "個人寫真",
+    description: "展現自信與個性，捕捉每個精彩瞬間",
+    package: "個人寫真"
+  },
+  {
+    id: 12,
+    src: "/images/情侶寫真/A7BE635F-CC0C-4FA1-BD18-B546C4F8418B.jpeg",
+    alt: "情侶寫真 - 紀錄甜蜜時光",
+    tag: "couple",
+    tagLabel: "情侶寫真",
+    description: "捕捉愛的故事，紀錄甜蜜時光",
+    package: "情侶寫真"
+  },
+  {
+    id: 10,
+    src: "/images/個人寫真/DFC100FD-ED67-453A-BDBF-71409F0F213B.jpeg",
+    alt: "個人寫真 - 展現獨特魅力",
+    tag: "personal",
+    tagLabel: "個人寫真",
+    description: "捕捉個人獨特魅力，展現真實自我",
+    package: "個人寫真"
+  }
 ];
 
 // Filter options
 const filters = [
   { value: 'all', label: '全部作品' },
-  { value: 'portrait', label: '寫真方案' },
-  { value: 'professional', label: '形象照方案' },
-  { value: 'creative', label: '創意方案' },
+  { value: 'professional', label: '形象照' },
+  { value: 'personal', label: '個人寫真' },
+  { value: 'couple', label: '情侶寫真' },
 ];
 
 export const PhotoGallery = () => {
