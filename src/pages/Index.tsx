@@ -73,7 +73,7 @@ const Index = () => {
       <Navbar />
 
       {/* Enhanced Hero Section with Parallax */}
-      <section className="relative hero-gradient text-white pt-24 pb-16 md:pb-32 overflow-hidden">
+      <section className="relative hero-gradient text-white pt-4 pb-12 md:pb-24 overflow-hidden">
         {/* Parallax decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div 
@@ -87,8 +87,8 @@ const Index = () => {
         </div>
         
         <div className="container px-4 md:px-6 mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex flex-col items-start text-left space-y-8 md:w-1/2">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex flex-col items-start text-left space-y-6 md:w-1/2">
               <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/30 backdrop-blur-md animate-fade-in">
                 <Camera className="h-10 w-10 text-primary" />
               </div>
@@ -103,19 +103,21 @@ const Index = () => {
                 專業形象照不是奢侈，是職涯的必要投資。讓你在履歷堆中脫穎而出。
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-delay-400">
+              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-delay-400 relative z-20">
                 <Button size="lg" className="px-8 gap-2 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
-                  <a href="#contact">立即預約</a>
+                  <a href="#contact" className="w-full h-full absolute inset-0 z-10"></a>
+                  立即預約
                 </Button>
-                <Button size="lg" variant="outline" className="px-8 border-primary text-primary hover:bg-primary/10 transition-all duration-300" asChild>
-                  <a href="#gallery">瀏覽作品</a>
+                <Button size="lg" variant="outline" className="text-primary px-8 gap-2 bg-white hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+                  <a href="#gallery" className="w-full h-full absolute inset-0 z-10"></a>
+                  瀏覽作品
                 </Button>
               </div>
             </div>
             
-            <div className="hidden md:flex justify-center items-center md:mt-0">
+            <div className="hidden md:flex justify-center items-center md:mt-0 md:ml-8">
             <div 
-              className="relative w-96 h-96 md:w-[28rem] md:h-[36rem] animate-scale"
+              className="relative w-96 h-96 md:w-[28rem] md:h-[42rem] animate-scale"
               style={{ transform: `translateY(${-scrollPosition * 0.05}px)` }}
             >
               <img 
@@ -130,7 +132,7 @@ const Index = () => {
         </div>
         
         {/* Decorative curved divider */}
-        <div className="absolute bottom-[-60px] left-0 right-0 z-20">
+        <div className="absolute bottom-[-20px] left-0 right-0 z-30 pointer-events-none">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
             <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,176C384,192,480,192,576,176C672,160,768,128,864,128C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
@@ -138,13 +140,13 @@ const Index = () => {
       </section>
 
       {/* Gallery Section */}
-      <section 
-        id="gallery" 
+      <section
+        id="gallery"
         ref={el => sectionsRef.current.gallery = el}
-        className={`py-24 bg-white ${animatedSections.gallery ? "animate-fade-in" : "opacity-0"}`}
+        className={`py-16 bg-white ${animatedSections.gallery ? "animate-fade-in" : "opacity-0"}`}
       >
         <div className="container px-4 md:px-6 mx-auto">
-          <div className="flex flex-col items-center text-center mb-12">
+          <div className="flex flex-col items-center text-center mb-4">
             <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
               <ImageIcon className="h-10 w-10 text-primary" />
             </div>
@@ -152,7 +154,7 @@ const Index = () => {
               精選<span className="text-primary">作品集</span>
               <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-primary rounded-full"></span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mt-4">
+            <p className="text-xl text-gray-600 max-w-2xl mt-0">
               精選攝影作品，展現不同方案的風格與效果
             </p>
           </div>
