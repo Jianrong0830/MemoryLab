@@ -1,8 +1,9 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type PhotoType = {
   id: number;
@@ -84,26 +85,65 @@ const filters = [
 export const PhotoGallery = () => {
   const [filter, setFilter] = useState<string>('all');
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoType | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const [revealedPhotos, setRevealedPhotos] = useState<number[]>([]);
 
   // Filter photos based on selected filter
   const filteredPhotos = filter === 'all' 
     ? photos 
     : photos.filter(photo => photo.tag === filter);
 
-  const handlePhotoClick = (photo: PhotoType) => {
-    setSelectedPhoto(photo);
+  // Handle photo navigation in dialog
+  const handlePrevious = () => {
+    if (!selectedPhoto) return;
+    const currentPhotoIndex = filteredPhotos.findIndex(photo => photo.id === selectedPhoto.id);
+    const previousIndex = (currentPhotoIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
+    setSelectedPhoto(filteredPhotos[previousIndex]);
+    setCurrentIndex(previousIndex);
   };
 
+  const handleNext = () => {
+    if (!selectedPhoto) return;
+    const currentPhotoIndex = filteredPhotos.findIndex(photo => photo.id === selectedPhoto.id);
+    const nextIndex = (currentPhotoIndex + 1) % filteredPhotos.length;
+    setSelectedPhoto(filteredPhotos[nextIndex]);
+    setCurrentIndex(nextIndex);
+  };
+
+  // Set up intersection observer for reveal animations
+  useEffect(() => {
+    if (!galleryRef.current) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const photoId = parseInt(entry.target.getAttribute('data-photo-id') || '0');
+          setRevealedPhotos(prev => [...prev, photoId]);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.15,
+      rootMargin: '0px 0px -10% 0px'
+    });
+
+    const photoElements = galleryRef.current.querySelectorAll('.photo-item');
+    photoElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [filter]); // Re-initialize when filter changes
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="flex flex-wrap gap-2 mb-8 justify-center">
+    <div className="container mx-auto px-4 py-16">
+      <div className="flex flex-wrap gap-3 mb-12 justify-center">
         {filters.map((filterOption) => (
           <Badge
             key={filterOption.value}
             variant={filter === filterOption.value ? "default" : "outline"}
             className={cn(
-              "cursor-pointer px-4 py-2 text-sm",
-              filter === filterOption.value ? "bg-primary" : ""
+              "cursor-pointer px-5 py-2.5 text-sm transition-all duration-300 hover:shadow-md",
+              filter === filterOption.value ? "bg-primary scale-105" : "hover:scale-105"
             )}
             onClick={() => setFilter(filterOption.value)}
           >
@@ -112,38 +152,81 @@ export const PhotoGallery = () => {
         ))}
       </div>
       
-      <div className="gallery-grid">
-        {filteredPhotos.map((photo) => (
-          <Dialog key={photo.id}>
-            <DialogTrigger asChild>
-              <div className="photo-card cursor-pointer group">
-                <div className={`photo-tag tag-${photo.tag}`}>{photo.tagLabel}</div>
-                <img 
-                  src={photo.src} 
-                  alt={photo.alt} 
-                  className="w-full h-80 object-cover"
-                />
-                <div className="image-overlay">
-                  <h3 className="font-semibold text-lg">{photo.package}</h3>
-                  <p className="text-sm opacity-80">{photo.description}</p>
+      <div ref={galleryRef} className="gallery-grid">
+        {filteredPhotos.map((photo, index) => {
+          const delay = index % 3 * 100; // Stagger effect
+          const isRevealed = revealedPhotos.includes(photo.id);
+          
+          return (
+            <Dialog key={photo.id}>
+              <DialogTrigger asChild>
+                <div 
+                  className={`photo-card hover-lift photo-item ${isRevealed ? 'revealed' : 'reveal-on-scroll'}`} 
+                  data-photo-id={photo.id}
+                  style={{ transitionDelay: `${delay}ms` }}
+                >
+                  <div className={`photo-tag tag-${photo.tag}`}>{photo.tagLabel}</div>
+                  <img 
+                    src={photo.src} 
+                    alt={photo.alt} 
+                    className="w-full h-80 object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="image-overlay">
+                    <h3 className="font-semibold text-xl mb-1">{photo.package}</h3>
+                    <p className="text-sm opacity-90">{photo.description}</p>
+                  </div>
                 </div>
-              </div>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[800px]">
-              <DialogHeader>
-                <DialogTitle className="text-2xl">{photo.package}</DialogTitle>
-                <DialogDescription>{photo.description}</DialogDescription>
-              </DialogHeader>
-              <div className="mt-4">
-                <img 
-                  src={photo.src} 
-                  alt={photo.alt} 
-                  className="w-full max-h-[70vh] object-contain"
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
-        ))}
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[800px] p-1 bg-background/95 backdrop-blur-md">
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handlePrevious();
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-2 backdrop-blur-sm hover:bg-black/50 transition-colors z-50"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  
+                  <img 
+                    src={selectedPhoto?.src || photo.src} 
+                    alt={selectedPhoto?.alt || photo.alt} 
+                    className="w-full max-h-[70vh] object-contain animate-scale"
+                  />
+                  
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 text-white rounded-full p-2 backdrop-blur-sm hover:bg-black/50 transition-colors z-50"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </div>
+                
+                <div className="p-6">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl">{selectedPhoto?.package || photo.package}</DialogTitle>
+                    <DialogDescription>{selectedPhoto?.description || photo.description}</DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="mt-4 flex justify-center">
+                    {filteredPhotos.map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={`inline-block h-2 w-2 rounded-full mx-1 ${idx === currentIndex ? 'bg-primary' : 'bg-gray-300'}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          );
+        })}
       </div>
     </div>
   );
