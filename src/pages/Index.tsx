@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -8,20 +7,14 @@ import { useState, useEffect, useRef } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { ContactForm } from "@/components/ContactForm";
+import Navbar from "@/components/Navbar"
 
 const Index = () => {
-  const handleBookingClick = () => {
-    toast({
-      title: "預約成功！",
-      description: "我們將會與您聯絡確認預約詳情",
-    });
-  };
-
   // Animation state for scroll-triggered animations
   const [animatedSections, setAnimatedSections] = useState<Record<string, boolean>>({
     hero: true,
     services: false,
-    gallery: false,
+    gallery: true,
     pricing: false,
     testimonials: false,
     contact: false,
@@ -77,55 +70,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Navigation */}
-      <header className="sticky top-0 z-40 w-full backdrop-blur-lg bg-white/80 border-b shadow-sm">
-        <div className="container flex items-center justify-between h-16 mx-auto px-4 md:px-8">
-          <div className="flex items-center gap-2">
-            <img 
-              src="/images/logo.png" 
-              alt="Memory Lab Logo" 
-              className="h-12 w-12"
-            />
-            <span className="font-semibold text-xl text-secondary">Memory Lab</span>
-          </div>
-          
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link to="#gallery">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " transition-all duration-300 hover:text-primary"}>
-                    作品展示
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link to="#services">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " transition-all duration-300 hover:text-primary"}>
-                    服務方案
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link to="#pricing">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " transition-all duration-300 hover:text-primary"}>
-                    價格與優惠
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link to="#contact">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle() + " transition-all duration-300 hover:text-primary"}>
-                    預約聯絡
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Enhanced Hero Section with Parallax */}
-      <section className="relative hero-gradient text-white pt-24 pb-32 overflow-hidden">
+      <section className="relative hero-gradient text-white pt-24 pb-16 md:pb-32 overflow-hidden">
         {/* Parallax decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div 
@@ -157,7 +105,7 @@ const Index = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-delay-400">
                 <Button size="lg" className="px-8 gap-2 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
-                  立即預約 <ArrowRight className="h-4 w-4" />
+                  <a href="#contact">立即預約</a>
                 </Button>
                 <Button size="lg" variant="outline" className="px-8 border-primary text-primary hover:bg-primary/10 transition-all duration-300" asChild>
                   <a href="#gallery">瀏覽作品</a>
@@ -165,24 +113,24 @@ const Index = () => {
               </div>
             </div>
             
-            {/* <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
-              <div 
-                className="relative w-80 h-80 md:w-[20rem] md:h-[30rem] animate-scale"
-                style={{ transform: `translateY(${-scrollPosition * 0.05}px)` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl"></div>
-                <img 
-                  src="/images/man.png" 
-                  alt="Memory Lab Logo" 
-                  className="w-full h-full object-contain relative z-10"
-                />
-              </div>
-            </div> */}
+            <div className="hidden md:flex justify-center items-center md:mt-0">
+            <div 
+              className="relative w-96 h-96 md:w-[28rem] md:h-[36rem] animate-scale"
+              style={{ transform: `translateY(${-scrollPosition * 0.05}px)` }}
+            >
+              <img 
+                src="/images/cover.png" 
+                alt="Memory Lab Logo" 
+                className="w-full h-full object-contain relative z-10 shadow-lg rounded-xl transition-transform duration-500 ease-in-out transform hover:scale-105"
+                style={{ marginTop: '100px' }}
+              />
+            </div>
+          </div>
           </div>
         </div>
         
         {/* Decorative curved divider */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-[-60px] left-0 right-0 z-20">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
             <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,176C384,192,480,192,576,176C672,160,768,128,864,128C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
@@ -217,7 +165,7 @@ const Index = () => {
       <section 
         id="services" 
         ref={el => sectionsRef.current.services = el}
-        className={`py-24 relative overflow-hidden ${animatedSections.services ? "animate-fade-in" : "opacity-0"}`}
+        className={`py-16 md:py-24 relative overflow-hidden ${animatedSections.services ? "animate-fade-in" : "opacity-0"}`}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white"></div>
         <div className="absolute top-0 inset-x-0">
@@ -269,7 +217,6 @@ const Index = () => {
                     <span>方案價格</span>
                     <span>NT$1,000</span>
                   </div>
-                  <Button className="w-full mt-4" onClick={handleBookingClick}>預約此方案</Button>
                 </CardContent>
               </Card>
             </div>
@@ -309,7 +256,6 @@ const Index = () => {
                     <span>方案價格</span>
                     <span>NT$2,000</span>
                   </div>
-                  <Button className="w-full mt-4 bg-primary hover:bg-primary/90" onClick={handleBookingClick}>預約此方案</Button>
                 </CardContent>
               </Card>
             </div>
@@ -342,7 +288,6 @@ const Index = () => {
                     <span>方案價格</span>
                     <span>NT$600</span>
                   </div>
-                  <Button className="w-full mt-4" onClick={handleBookingClick}>預約此方案</Button>
                 </CardContent>
               </Card>
             </div>
@@ -485,7 +430,7 @@ const Index = () => {
                   </div>
                   <div>
                     <p className="font-medium text-lg">職涯顧問</p>
-                    <p className="text-sm text-gray-500">北科學長姐團隊</p>
+                    <p className="text-sm text-gray-500">各大公司HR</p>
                   </div>
                 </div>
               </CardContent>
@@ -713,17 +658,10 @@ const Index = () => {
               </p>
               
               <div className="mt-6 flex space-x-4">
-                <a href="#" className="text-white hover:text-primary transition-colors">
+                <a href="https://www.instagram.com/memorylab.vip/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-primary transition-colors">
                   <div className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full">
                     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd"></path>
-                    </svg>
-                  </div>
-                </a>
-                <a href="#" className="text-white hover:text-primary transition-colors">
-                  <div className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full">
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
                     </svg>
                   </div>
                 </a>
@@ -734,18 +672,30 @@ const Index = () => {
               <h3 className="font-semibold text-xl mb-6">服務地點</h3>
               <p className="text-gray-300 leading-relaxed">
                 北科大設計館<br />
-                地址：台北市大安區忠孝東路三段1號<br />
-                營業時間：週一至週五 10:00-18:00
+                台北市大安區忠孝東路三段1號
               </p>
             </div>
             
             <div>
               <h3 className="font-semibold text-xl mb-6">聯絡我們</h3>
               <p className="text-gray-300 leading-relaxed">
-                網站：memorylab.vip<br />
-                Instagram: @memorylab.vip<br />
-                Email: contact@memorylab.vip<br />
-                電話：0902-258-817
+                Instagram：
+                <a 
+                  href="https://www.instagram.com/memorylab.vip/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-500 hover:underline"
+                >
+                  @memorylab.vip
+                </a><br />
+                Email:：
+                <a href="mailto:contact@memorylab.vip" className="text-blue-500 hover:underline">
+                  contact@memorylab.vip
+                </a><br />
+                電話：
+                <a href="tel:+886902258817" className="text-blue-500 hover:underline">
+                  0902-258-817
+                </a>
               </p>
             </div>
           </div>

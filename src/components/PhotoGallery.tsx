@@ -262,7 +262,7 @@ export const PhotoGallery = () => {
         ref={galleryRef} 
         className={cn(
           isGridView 
-            ? "gallery-grid" 
+            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
             : "flex flex-col gap-12"
         )}
       >
@@ -293,24 +293,23 @@ export const PhotoGallery = () => {
                   onMouseEnter={() => setHoveredId(photo.id)}
                   onMouseLeave={() => setHoveredId(null)}
                 >
-                  {/* Tag for grid view */}
-                  {isGridView && (
-                    <div className={`photo-tag tag-${photo.tag}`}>{photo.tagLabel}</div>
-                  )}
-
-                  {/* Image container */}
+                  {/* Tag positioned in top-right with white text */}
+                  <div className="absolute top-3 right-3 z-10 bg-primary/80 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm shadow-md">
+                    {photo.tagLabel}
+                  </div>
+                  
+                  {/* Image container with fixed 5:4 aspect ratio */}
                   <div className={cn(
-                    "overflow-hidden",
-                    !isGridView && "flex-shrink-0 w-1/2"
+                    "overflow-hidden relative",
+                    isGridView 
+                      ? "pb-[80%]" // 5:4 aspect ratio (80% = 4/5*100)
+                      : "flex-shrink-0 w-1/2 pb-[40%]" // Half width with 5:4 aspect ratio
                   )}>
                     <img 
                       src={photo.src} 
                       alt={photo.alt} 
                       className={cn(
-                        "transition-all duration-700",
-                        isGridView 
-                          ? "w-full h-80 object-cover hover:scale-105" 
-                          : "w-full h-64 object-cover hover:scale-105"
+                        "absolute inset-0 w-full h-full object-cover transition-all duration-700 hover:scale-105"
                       )}
                     />
                   </div>
@@ -318,7 +317,6 @@ export const PhotoGallery = () => {
                   {/* Content for list view */}
                   {!isGridView && (
                     <div className="p-6 flex flex-col justify-center flex-grow">
-                      <div className={`photo-tag tag-${photo.tag} relative left-0 top-0 mb-4`}>{photo.tagLabel}</div>
                       <h3 className="font-semibold text-xl mb-2">{photo.package}</h3>
                       <p className="text-gray-600 mb-4">{photo.description}</p>
                       <div className="mt-auto">
