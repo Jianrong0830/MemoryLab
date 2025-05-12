@@ -94,13 +94,14 @@ const Index = () => {
               </div>
               
               <h1 className="hero-heading text-4xl md:text-6xl font-bold tracking-tight md:max-w-3xl leading-tight animate-fade-in-delay-200">
-                職涯形象，從一張<span className="text-primary relative">好照片<br/>
+                職涯形象，從一張<span className="text-primary relative">照片<br/>
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-primary/50"></span>
                 </span>開始
               </h1>
               
               <p className="text-xl text-gray-100 max-w-2xl leading-relaxed animate-fade-in-delay-400">
-                專業形象照不是奢侈，是職涯的必要投資。讓你在履歷堆中脫穎而出。
+                專業形象照讓你在履歷堆中脫穎而出，6/6 北科大校園拍攝，名額有限<br/>
+                (另提供寫真方案，5/24 準時開拍)
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-delay-400 relative z-20">
@@ -215,9 +216,12 @@ const Index = () => {
                     <span className="font-medium">日期</span>
                     <span>5/24</span>
                   </div>
-                  <div className="flex justify-between items-center font-bold text-lg">
-                    <span>方案價格</span>
-                    <span>NT$1,000</span>
+                  <div className="flex flex-col items-end font-bold text-lg">
+                    <div className="line-through text-gray-500">NT$1,000</div>
+                    <div className="text-red-600">優惠後最低 NT$700</div>
+                  </div>
+                  <div className="text-sm text-right text-gray-600 italic">
+                    * 須預付訂金 NT$250 以保留名額
                   </div>
                 </CardContent>
               </Card>
@@ -252,11 +256,14 @@ const Index = () => {
                   </div>
                   <div className="flex justify-between items-center border-b pb-2 text-sm">
                     <span className="font-medium">選配</span>
-                    <span>化妝(30分鐘，+$500)</span>
+                    <span>化妝(30分鐘，$500)</span>
                   </div>
-                  <div className="flex justify-between items-center font-bold text-lg">
-                    <span>方案價格</span>
-                    <span>NT$2,000</span>
+                  <div className="flex flex-col items-end font-bold text-lg">
+                    <div className="line-through text-gray-500">NT$2,000</div>
+                    <div className="text-red-600">優惠後最低 NT$1,700</div>
+                  </div>
+                  <div className="text-sm text-right text-gray-600 italic">
+                    * 須預付訂金 NT$500 以保留名額
                   </div>
                 </CardContent>
               </Card>
@@ -264,34 +271,37 @@ const Index = () => {
 
             {/* Service 3 */}
             <div className="service-card relative hover-lift">
-              <Card className="border-t-4 border-t-secondary/50 h-full">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary/50 to-transparent"></div>
-                <CardHeader className="text-center pt-8">
-                  <div className="mx-auto bg-secondary/10 w-16 h-16 flex items-center justify-center rounded-full mb-4">
-                    <Users className="h-8 w-8 text-secondary" />
-                  </div>
-                  <CardTitle className="text-2xl">職涯諮詢</CardTitle>
-                  <CardDescription>北科學長姐團隊專業指導</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center border-b pb-2">
-                    <span className="font-medium">諮詢時間</span>
-                    <span>20 分鐘</span>
-                  </div>
-                  <div className="flex justify-between items-center border-b pb-2">
-                    <span className="font-medium">服務地點</span>
-                    <span>北科大</span>
-                  </div>
-                  <div className="flex justify-between items-center border-b pb-2">
-                    <span className="font-medium">日期</span>
-                    <span>6/6</span>
-                  </div>
-                  <div className="flex justify-between items-center font-bold text-lg">
-                    <span>方案價格</span>
-                    <span>NT$600</span>
-                  </div>
-                </CardContent>
-              </Card>
+            <Card className="border-t-4 border-t-secondary/50 h-full">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary/50 to-transparent"></div>
+              <CardHeader className="text-center pt-8">
+                <div className="mx-auto bg-secondary/10 w-16 h-16 flex items-center justify-center rounded-full mb-4">
+                  <Users className="h-8 w-8 text-secondary" />
+                </div>
+                <CardTitle className="text-2xl">職涯諮詢</CardTitle>
+                <CardDescription>北科學長姐團隊專業指導</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center border-b pb-2">
+                  <span className="font-medium">諮詢時間</span>
+                  <span>20 分鐘</span>
+                </div>
+                <div className="flex justify-between items-center border-b pb-2">
+                  <span className="font-medium">服務地點</span>
+                  <span>北科大</span>
+                </div>
+                <div className="flex justify-between items-center border-b pb-2">
+                  <span className="font-medium">日期</span>
+                  <span>6/6</span>
+                </div>
+                <div className="flex flex-col items-end font-bold text-lg">
+                  <div className="line-through text-gray-500">NT$700</div>
+                  <div className="text-red-600">優惠後最低 NT$400</div>
+                </div>
+                <div className="text-sm text-right text-gray-600 italic">
+                  * 須預付全額以保留名額
+                </div>
+              </CardContent>
+            </Card>
             </div>
           </div>
         </div>
@@ -331,7 +341,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  貼文案讚+追蹤+分享，對應方案折50元
+                  貼文案讚+追蹤+分享，對應方案折100元
                 </p>
               </CardContent>
             </Card>
@@ -344,12 +354,12 @@ const Index = () => {
                   <div className="bg-secondary/10 p-3 rounded-full">
                     <Layout className="h-6 w-6 text-secondary" />
                   </div>
-                  <CardTitle>形象照加購優惠</CardTitle>
+                  <CardTitle>學生優惠</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  有拍形象照，職涯諮詢優惠價450元
+                  出示各校學生證，任一方案折200元
                 </p>
               </CardContent>
             </Card>
@@ -367,7 +377,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  寫真+形象照套組優惠價2800元（原價3000元）
+                  形象照 + 職涯諮詢，再優惠100元
                 </p>
               </CardContent>
             </Card>
@@ -380,13 +390,165 @@ const Index = () => {
                   <div className="bg-secondary/10 p-3 rounded-full">
                     <Badge className="h-6 w-6 text-secondary" />
                   </div>
-                  <CardTitle>推薦優惠</CardTitle>
+                  <CardTitle>套組優惠</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  使用推薦碼，任一方案折50元
+                  形象照 + 寫真方案，再優惠200元
                 </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section with Enhanced Design */}
+      <section className="py-24 bg-white relative">
+        <div className="container px-4 md:px-6 mx-auto">
+          <div className="flex flex-col items-center text-center mb-16">
+            <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
+              <Users className="h-10 w-10 text-primary" />
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 relative">
+              專業<span className="text-primary">團隊</span>
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-primary rounded-full"></span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mt-4">
+              合作夥伴介紹
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* 北科學長姐團隊 */}
+            <Card className="hover-lift group relative">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="bg-secondary/10 p-2 rounded-full">
+                    <Users className="h-5 w-5 text-secondary" />
+                  </div>
+                  北科學長姐團隊
+                </CardTitle>
+                <CardDescription>職涯諮詢團隊</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">🎓</span>
+                    <span>大學實習版｜職涯探索X求職分享</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">✏️</span>
+                    <span>實習資訊｜職涯諮詢｜履歷撰寫</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">💼</span>
+                    <span>LinkedIn 經營 ｜模擬面試</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">🏷️</span>
+                    <span>#實習 #找工作 #NTUT</span>
+                  </li>
+                </ul>
+                <div className="mt-4">
+                  <a
+                    href="https://www.instagram.com/ntut_intern/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:text-primary/80 transition-colors"
+                  >
+                    📸 Instagram：@ntut_intern
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* 有點閒｜影像工作室 */}
+            <Card className="hover-lift group relative">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="bg-primary/10 p-2 rounded-full">
+                    <Camera className="h-5 w-5 text-primary" />
+                  </div>
+                  有點閒｜影像工作室
+                </CardTitle>
+                <CardDescription>攝影師團隊</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="text-primary mr-2">🖼️</span>
+                    <span>商業形象照 / 畢業照 / 商品攝影 / 主題寫真</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary mr-2">🎥</span>
+                    <span>形象影片·活動紀錄·廣告宣傳</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary mr-2">🧪</span>
+                    <span>不正經攝影團隊 x 不設限的風格實驗室</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary mr-2">📍</span>
+                    <span>台北.桃園</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-primary mr-2">📧</span>
+                    <span>sunyeeray@gmail.com</span>
+                  </li>
+                </ul>
+                <div className="mt-4">
+                  <a
+                    href="https://www.instagram.com/alittlefree.studio/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:text-primary/80 transition-colors"
+                  >
+                    📸 Instagram：@alittlefree.studio
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Zoe貽 妝髮造型師 */}
+            <Card className="hover-lift group relative">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <div className="bg-secondary/10 p-2 rounded-full">
+                    <Users className="h-5 w-5 text-secondary" />
+                  </div>
+                  Zoe貽 妝髮造型師
+                </CardTitle>
+                <CardDescription>專業造型師</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">💄</span>
+                    <span>北部自由接案造型師</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">📸</span>
+                    <span>平面｜商業｜寫真｜形象證件拍攝｜新秘</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-secondary mr-2">🎬</span>
+                    <span>節目｜活動｜綜藝｜戲劇｜廣告｜MV</span>
+                  </li>
+                </ul>
+                <div className="mt-4">
+                  <a
+                    href="https://www.instagram.com/zoe__makeup_825"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:text-primary/80 transition-colors"
+                  >
+                    📸 Instagram：@zoe__makeup_825
+                  </a>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -463,96 +625,6 @@ const Index = () => {
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
             <path fill="#ffffff" fillOpacity="1" d="M0,128L48,138.7C96,149,192,171,288,192C384,213,480,235,576,224C672,213,768,171,864,165.3C960,160,1056,192,1152,186.7C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
-        </div>
-      </section>
-
-      {/* Team Section with Enhanced Design */}
-      <section className="py-24 bg-white relative">
-        <div className="container px-4 md:px-6 mx-auto">
-          <div className="flex flex-col items-center text-center mb-16">
-            <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
-              <Users className="h-10 w-10 text-primary" />
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 relative">
-              專業<span className="text-primary">團隊</span>
-              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 bg-primary rounded-full"></span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mt-4">
-              合作夥伴介紹
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="hover-lift group">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="bg-primary/10 p-2 rounded-full">
-                    <Camera className="h-5 w-5 text-primary" />
-                  </div>
-                  有點閒｜影像工作室
-                </CardTitle>
-                <CardDescription>攝影師團隊</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">📷</span>
-                    <span>商業形象照 / 畢業照 / 商品攝影 / 主題寫真</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">📽️</span>
-                    <span>形象影片·活動紀錄·廣告宣傳</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">🖤</span>
-                    <span>不正經攝影團隊 x 不設限的風格實驗室</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">📍</span>
-                    <span>台北.桃園</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">✉️</span>
-                    <span>sunyeeray@gmail.com</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="hover-lift group">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="bg-secondary/10 p-2 rounded-full">
-                    <Users className="h-5 w-5 text-secondary" />
-                  </div>
-                  北科學長姐團隊
-                </CardTitle>
-                <CardDescription>職涯諮詢團隊</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">🎓</span>
-                    <span>大學實習版｜職涯探索X求職分享</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">📝</span>
-                    <span>實習資訊｜職涯諮詢｜履歷撰寫</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">💼</span>
-                    <span>LinkedIn 經營 ｜模擬面試</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">#</span>
-                    <span>#實習 #找工作 #NTUT</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </section>
 
