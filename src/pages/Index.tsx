@@ -101,7 +101,7 @@ const Index = () => {
               
               <p className="text-xl text-gray-100 max-w-2xl leading-relaxed animate-fade-in-delay-400">
                 專業形象照讓你在履歷堆中脫穎而出，6/6 北科大校園拍攝，名額有限<br/>
-                (另提供寫真方案，5/24 準時開拍)
+                (另提供寫真方案)
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-delay-400 relative z-20">
@@ -214,7 +214,7 @@ const Index = () => {
                   </div>
                   <div className="flex justify-between items-center border-b pb-2">
                     <span className="font-medium">日期</span>
-                    <span>5/24</span>
+                    <span>6/6</span>
                   </div>
                   <div className="flex flex-col items-end font-bold text-lg">
                     <div className="line-through text-gray-500">NT$1,000</div>
@@ -294,11 +294,11 @@ const Index = () => {
                   <span>6/6</span>
                 </div>
                 <div className="flex flex-col items-end font-bold text-lg">
-                  <div className="line-through text-gray-500">NT$700</div>
-                  <div className="text-red-600">優惠後最低 NT$400</div>
+                  <div className="line-through text-gray-500">NT$800</div>
+                  <div className="text-red-600">優惠後最低 NT$500</div>
                 </div>
                 <div className="text-sm text-right text-gray-600 italic">
-                  * 須預付全額以保留名額
+                  * 須預付訂金 NT$500 以保留名額
                 </div>
               </CardContent>
             </Card>
@@ -341,7 +341,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  貼文案讚+追蹤+分享，對應方案折100元
+                  任一貼文案讚+追蹤+分享，現折100元 (限使用1次)
                 </p>
               </CardContent>
             </Card>
@@ -359,43 +359,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  出示各校學生證，任一方案折200元
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Promo 3 */}
-            <Card className="hover-lift transition-all duration-500 border-l-4 border-l-primary overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 -translate-x-1/2 transform group-hover:bg-primary/10 transition-all duration-500"></div>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="bg-primary/10 p-3 rounded-full">
-                    <Camera className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle>套組優惠</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  形象照 + 職涯諮詢，再優惠100元
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Promo 4 */}
-            <Card className="hover-lift transition-all duration-500 border-l-4 border-l-secondary overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -translate-y-1/2 -translate-x-1/2 transform group-hover:bg-secondary/10 transition-all duration-500"></div>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="bg-secondary/10 p-3 rounded-full">
-                    <Badge className="h-6 w-6 text-secondary" />
-                  </div>
-                  <CardTitle>套組優惠</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  形象照 + 寫真方案，再優惠200元
+                  出示各校學生證，現折200元 (可重複使用)
                 </p>
               </CardContent>
             </Card>

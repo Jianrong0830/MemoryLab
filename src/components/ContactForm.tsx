@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,30 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import emailjs from "emailjs-com";
+
+// 各方案價格（NT$）
+const packagePrices: Record<string, number> = {
+  "寫真方案": 1000,
+  "形象照方案": 2000,
+  "加購專業妝容": 500,
+  "職涯諮詢": 800,
+};
+
+// 各方案訂金（NT$）
+const depositPrices: Record<string, number> = {
+  "寫真方案": 250,
+  "形象照方案": 500,
+  "加購專業妝容": 500,
+  "職涯諮詢": 500,
+};
+
+// 寫死的優惠碼清單
+const validPromoCodes = [
+  "SAVE100RYAN", 
+  "SUCKARES",
+  "HANDSOMEXIANGDE",
+  "SAVE100SIIIII"
+];
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "請輸入您的姓名" }),
@@ -41,6 +65,7 @@ const timeOptions = {
 export const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState<string | null>(null);
+  const [isPromoValid, setIsPromoValid] = useState<boolean | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,14 +83,92 @@ export const ContactForm = () => {
       message: "",
     },
   });
+  const { watch, setValue } = form;
 
-  const selectedPackages = form.watch("package");
+  const selectedPackages = watch("package");
+  const igInput = watch("ig");
+  const studentInput = watch("studentInfo");
+  const promoInput = watch("promoteCode");
+
+  // 優惠碼即時驗證
+  useEffect(() => {
+    const code = promoInput?.trim();
+    setIsPromoValid(code ? validPromoCodes.includes(code) : null);
+  }, [promoInput]);
+
+  // 若取消勾選「形象照方案」，自動取消「加購專業妝容」
+  useEffect(() => {
+    if (
+      !selectedPackages.includes("形象照方案 (6/6)") &&
+      selectedPackages.includes("加購專業妝容")
+    ) {
+      setValue(
+        "package",
+        selectedPackages.filter((pkg) => pkg !== "加購專業妝容"),
+        { shouldValidate: true }
+      );
+    }
+  }, [selectedPackages, setValue]);
+
+  // 將「化妝加購」與其他方案分離
+  const makeupSelected = selectedPackages.includes("加購專業妝容");
+  const nonMakeupPackages = selectedPackages.filter(
+    (pkg) => pkg !== "加購專業妝容"
+  );
+
+  // 計算總價
+  const totalPrice = useMemo(() => {
+    // 非化妝方案小計
+    const base = nonMakeupPackages.reduce(
+      (sum, pkg) => sum + (packagePrices[pkg] || 0),
+      0
+    );
+    // 化妝加購價格（獨立不參與任何折扣）
+    const makeupPrice = makeupSelected ? packagePrices["加購專業妝容"] : 0;
+    // IG 折扣：全訂單一次 NT$100
+    const igDiscount = igInput ? 100 : 0;
+    // 學生優惠：非化妝方案，每個方案折 NT$200
+    const studentDiscount = studentInput
+      ? nonMakeupPackages.length * 200
+      : 0;
+    // 優惠碼：全訂單一次 NT$100
+    const promoDiscount = isPromoValid ? 100 : 0;
+
+    const total =
+      base + makeupPrice - igDiscount - studentDiscount - promoDiscount;
+    return total > 0 ? total : 0;
+  }, [
+    nonMakeupPackages,
+    makeupSelected,
+    igInput,
+    studentInput,
+    isPromoValid,
+  ]);
+
+  // 計算訂金
+  const depositTotal = useMemo(() => {
+    return selectedPackages.reduce(
+      (sum, pkg) => sum + (depositPrices[pkg] || 0),
+      0
+    );
+  }, [selectedPackages]);
 
   const onSubmit = (data: FormValues) => {
     setIsSubmitting(true);
     setFormStatus(null);
 
-    // 將陣列轉成字串，若為空陣列則顯示「無」
+    // 最後驗證優惠碼
+    if (data.promoteCode && !validPromoCodes.includes(data.promoteCode.trim())) {
+      toast({
+        title: "優惠碼無效",
+        description: "請輸入有效的優惠碼或留空",
+      });
+      setIsPromoValid(false);
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 時段轉字串
     const photoSlotsText = data.photoTimeSlots.length
       ? data.photoTimeSlots.join(", ")
       : "無";
@@ -91,6 +194,8 @@ export const ContactForm = () => {
           ig: data.ig || "無",
           studentInfo: data.studentInfo || "無",
           promoteCode: data.promoteCode || "無",
+          totalPrice: totalPrice.toString(),
+          depositTotal: depositTotal.toString(),
           message: data.message || "無留言",
         },
         "WMKgzrqJghOgEHtCa"
@@ -99,10 +204,10 @@ export const ContactForm = () => {
         setFormStatus("success");
         toast({
           title: "預約成功！",
-          description:
-            "我們將根據您提供的方便時段安排服務，並提供訂金匯款方式。",
+          description: `總計 NT$${totalPrice}，需付訂金 NT$${depositTotal}。我們將依您選擇的時段安排，並提供匯款方式。`,
         });
         form.reset();
+        setIsPromoValid(null);
       })
       .catch(() => {
         setFormStatus("error");
@@ -140,7 +245,7 @@ export const ContactForm = () => {
             )}
           />
 
-          {/* Email + 電話 */}
+          {/* 電子郵件 + 電話 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -149,7 +254,11 @@ export const ContactForm = () => {
                 <FormItem>
                   <FormLabel>電子郵件</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="your@email.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="your@email.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -170,7 +279,7 @@ export const ContactForm = () => {
             />
           </div>
 
-          {/* 方案複選 */}
+          {/* 方案選擇（含化妝加購條件） */}
           <FormField
             control={form.control}
             name="package"
@@ -178,44 +287,51 @@ export const ContactForm = () => {
               <FormItem>
                 <FormLabel>方案選擇（複選）</FormLabel>
                 <div className="grid gap-2">
-                  {[
-                    "寫真方案 (5/24)",
-                    "形象照方案 (6/6)",
-                    "形象照加購專業妝容",
-                    "職涯諮詢 (6/6)",
-                  ].map((pkg) => (
-                    <FormField
-                      key={pkg}
-                      control={form.control}
-                      name="package"
-                      render={({ field }) => (
-                        <FormItem className="flex items-center space-x-3">
-                          <FormControl>
-                            <input
-                              type="checkbox"
-                              checked={field.value.includes(pkg)}
-                              onChange={(e) => {
-                                const checked = e.target.checked;
-                                const newValue = checked
-                                  ? [...field.value, pkg]
-                                  : field.value.filter((item) => item !== pkg);
-                                field.onChange(newValue);
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">{pkg}</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
+                  {Object.keys(packagePrices).map((pkg) => {
+                    // 化妝加購僅在選了形象照方案時顯示
+                    if (
+                      pkg === "加購專業妝容" &&
+                      !selectedPackages.includes("形象照方案 (6/6)")
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <FormField
+                        key={pkg}
+                        control={form.control}
+                        name="package"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center space-x-3">
+                            <FormControl>
+                              <input
+                                type="checkbox"
+                                checked={field.value.includes(pkg)}
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  const newValue = checked
+                                    ? [...field.value, pkg]
+                                    : field.value.filter((v) => v !== pkg);
+                                  field.onChange(newValue);
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {pkg}
+                              {pkg === "加購專業妝容" ? " (+NT$500)" : ""}
+                            </FormLabel>
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  })}
                 </div>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* 動態時段選擇 */}
-          {selectedPackages.includes("寫真方案 (5/24)") && (
+          {/* 時段選擇 */}
+          {selectedPackages.includes("寫真方案 (6/6)") && (
             <FormField
               control={form.control}
               name="photoTimeSlots"
@@ -238,7 +354,7 @@ export const ContactForm = () => {
                                   const checked = e.target.checked;
                                   const newValue = checked
                                     ? [...field.value, slot]
-                                    : field.value.filter((item) => item !== slot);
+                                    : field.value.filter((v) => v !== slot);
                                   field.onChange(newValue);
                                 }}
                               />
@@ -276,7 +392,7 @@ export const ContactForm = () => {
                                   const checked = e.target.checked;
                                   const newValue = checked
                                     ? [...field.value, slot]
-                                    : field.value.filter((item) => item !== slot);
+                                    : field.value.filter((v) => v !== slot);
                                   field.onChange(newValue);
                                 }}
                               />
@@ -314,7 +430,7 @@ export const ContactForm = () => {
                                   const checked = e.target.checked;
                                   const newValue = checked
                                     ? [...field.value, slot]
-                                    : field.value.filter((item) => item !== slot);
+                                    : field.value.filter((v) => v !== slot);
                                   field.onChange(newValue);
                                 }}
                               />
@@ -330,43 +446,55 @@ export const ContactForm = () => {
             />
           )}
 
-          {/* 其他選填 */}
+          {/* IG 折扣欄 */}
           <FormField
             control={form.control}
             name="ig"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>貼文按讚+追蹤+分享限動折價NT$100（選填）</FormLabel>
+                <FormLabel>(選填) 貼文按讚+追蹤+分享限動 (折抵 NT$100)</FormLabel>
                 <FormControl>
-                  <Input placeholder="請輸入您的Instagram帳號" {...field} />
+                  <Input placeholder="請輸入您的 Instagram 帳號以供確認" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
+
+          {/* 學生優惠 */}
           <FormField
             control={form.control}
             name="studentInfo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>學生優惠折價NT$200（選填）</FormLabel>
+                <FormLabel>(選填) 學生優惠（每方案折抵 NT$200）</FormLabel>
                 <FormControl>
-                  <Input placeholder="請輸入您的學校 + 學號" {...field} />
+                  <Input placeholder="請輸入您的學校、學號以供確認" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
+
+          {/* 優惠碼 */}
           <FormField
             control={form.control}
             name="promoteCode"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>優惠碼（選填）</FormLabel>
+                <FormLabel>優惠碼</FormLabel>
                 <FormControl>
                   <Input placeholder="請輸入優惠碼" {...field} />
                 </FormControl>
+                {isPromoValid === true && (
+                  <p className="text-green-600 text-sm mt-1">✅ 優惠碼正確，可折抵 NT$100！</p>
+                )}
+                {isPromoValid === false && (
+                  <p className="text-red-600 text-sm mt-1">❌ 優惠碼無效</p>
+                )}
               </FormItem>
             )}
           />
+
+          {/* 留言 */}
           <FormField
             control={form.control}
             name="message"
@@ -374,14 +502,20 @@ export const ContactForm = () => {
               <FormItem>
                 <FormLabel>留言（選填）</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="有任何問題或特殊需求，請在此留言..."
-                    {...field}
-                  />
+                  <Textarea placeholder="有任何問題或需求..." {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
+
+          {/* 顯示價格 */}
+          <div className="text-right space-y-1">
+            <div className="text-2xl font-bold">總計：NT${totalPrice}</div>
+            <div className="text-lg text-gray-600">需付訂金：NT${depositTotal}</div>
+            <div className="text-sm text-gray-500">
+              (確認有空位後團隊會再提供付款方式)
+            </div>
+          </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "提交中..." : "送出預約"}
@@ -393,14 +527,16 @@ export const ContactForm = () => {
       {formStatus && (
         <div
           className={`mt-4 p-4 text-center ${
-            formStatus === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            formStatus === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
           }`}
         >
           {formStatus === "success" ? (
             <>
               <p>預約成功！</p>
               <p className="text-sm mt-2">
-                團隊將依您填寫的時段聯繫安排，確認後會聯繫您並提供訂金匯款方式。
+                總計 NT${totalPrice}，需付訂金 NT${depositTotal}。我們將儘快與您聯繫。
               </p>
             </>
           ) : (
