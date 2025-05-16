@@ -32,18 +32,6 @@ const depositPrices: Record<string, number> = {
   "職涯諮詢": 500,
 };
 
-// 寫死的優惠碼清單
-const validPromoCodes = [
-  "SAVE100RYAN", 
-  "SUCKARES",
-  "HANDSOMEXIANGDE",
-  "SAVE100SIIIII",
-  "SAVE100AMY",
-  "ntub_ba",
-  "zoemakeup",
-  "ntub_imd",
-];
-
 const formSchema = z.object({
   name: z.string().min(2, { message: "請輸入您的姓名" }),
   email: z.string().email({ message: "請輸入有效的電子郵件" }),
@@ -70,6 +58,25 @@ export const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState<string | null>(null);
   const [isPromoValid, setIsPromoValid] = useState<boolean | null>(null);
+  // 優惠碼清單從 Google Sheets 取得
+  const [validPromoCodes, setValidPromoCodes] = useState<string[]>([]);
+  useEffect(() => {
+    const API_KEY = "AIzaSyC8q91nMNuDxacoH8ASPDnwRFdvbh5p5FU";
+    const SHEET_ID = "1eywCIhCIIodqwfzfXigSrgMV7TNNDJis5RZpQ5Jxxog";
+    const SHEET_NAME = "優惠碼";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}!A:A?key=${API_KEY}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.values) {
+          const codes = (data.values as string[][]).flat().filter((code) => code);
+          setValidPromoCodes(codes);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch promo codes", err);
+      });
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -98,12 +105,12 @@ export const ContactForm = () => {
   useEffect(() => {
     const code = promoInput?.trim();
     setIsPromoValid(code ? validPromoCodes.includes(code) : null);
-  }, [promoInput]);
+  }, [promoInput, validPromoCodes]);
 
   // 若取消勾選「形象照方案」，自動取消「加購專業妝容」
   useEffect(() => {
     if (
-      !selectedPackages.includes("形象照方案 (6/6)") &&
+      !selectedPackages.includes("形象照方案") &&
       selectedPackages.includes("加購專業妝容")
     ) {
       setValue(
@@ -295,7 +302,7 @@ export const ContactForm = () => {
                     // 化妝加購僅在選了形象照方案時顯示
                     if (
                       pkg === "加購專業妝容" &&
-                      !selectedPackages.includes("形象照方案 (6/6)")
+                      !selectedPackages.includes("形象照方案")
                     ) {
                       return null;
                     }
@@ -335,7 +342,7 @@ export const ContactForm = () => {
           />
 
           {/* 時段選擇 */}
-          {selectedPackages.includes("寫真方案 (6/6)") && (
+          {selectedPackages.includes("寫真方案") && (
             <FormField
               control={form.control}
               name="photoTimeSlots"
@@ -373,7 +380,7 @@ export const ContactForm = () => {
               )}
             />
           )}
-          {selectedPackages.includes("形象照方案 (6/6)") && (
+          {selectedPackages.includes("形象照方案") && (
             <FormField
               control={form.control}
               name="imageTimeSlots"
@@ -411,7 +418,7 @@ export const ContactForm = () => {
               )}
             />
           )}
-          {selectedPackages.includes("職涯諮詢 (6/6)") && (
+          {selectedPackages.includes("職涯諮詢") && (
             <FormField
               control={form.control}
               name="consultTimeSlots"
