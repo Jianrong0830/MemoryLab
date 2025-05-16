@@ -37,7 +37,11 @@ const validPromoCodes = [
   "SAVE100RYAN", 
   "SUCKARES",
   "HANDSOMEXIANGDE",
-  "SAVE100SIIIII"
+  "SAVE100SIIIII",
+  "SAVE100AMY",
+  "ntub_ba",
+  "zoemakeup",
+  "ntub_imd",
 ];
 
 const formSchema = z.object({
