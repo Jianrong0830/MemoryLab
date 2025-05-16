@@ -212,6 +212,7 @@ export const ContactForm = () => {
         "WMKgzrqJghOgEHtCa"
       )
       .then(() => {
+        // 1) EmailJS 成功
         setFormStatus("success");
         toast({
           title: "預約成功！",
@@ -219,6 +220,28 @@ export const ContactForm = () => {
         });
         form.reset();
         setIsPromoValid(null);
+
+        // 2) 呼叫 Google Sheets Web App
+        fetch("https://script.google.com/macros/s/AKfycbyf-flh1UZEB4X2-cCE8f5o6iX_5-t7O5RwLNB98yBF7I7RBka3q-_Ju4F2uspjhUG66g/exec", {
+          method: "POST",
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            package: data.package.join(", "),
+            photoTimeSlots: data.photoTimeSlots.join(", "),
+            imageTimeSlots: data.imageTimeSlots.join(", "),
+            consultTimeSlots: data.consultTimeSlots.join(", "),
+            ig: data.ig || "",
+            studentInfo: data.studentInfo || "",
+            promoteCode: data.promoteCode || "",
+            totalPrice: totalPrice,
+            depositTotal: depositTotal,
+            message: data.message || ""
+          }),
+        })
       })
       .catch(() => {
         setFormStatus("error");
@@ -547,7 +570,7 @@ export const ContactForm = () => {
             <>
               <p>預約成功！</p>
               <p className="text-sm mt-2">
-                總計 NT${totalPrice}，需付訂金 NT${depositTotal}。我們將儘快與您聯繫。
+                排定時段後我們將儘快與您聯繫。
               </p>
             </>
           ) : (
