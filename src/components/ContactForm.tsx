@@ -21,7 +21,6 @@ const packagePrices: Record<string, number> = {
   "寫真方案": 1000,
   "形象照方案": 2000,
   "加購專業妝容": 500,
-  "職涯諮詢": 800,
 };
 
 // 各方案訂金（NT$）
@@ -29,7 +28,6 @@ const depositPrices: Record<string, number> = {
   "寫真方案": 250,
   "形象照方案": 500,
   "加購專業妝容": 500,
-  "職涯諮詢": 500,
 };
 
 const formSchema = z.object({
@@ -39,7 +37,6 @@ const formSchema = z.object({
   package: z.array(z.string()).min(1, { message: "請選擇至少一個方案" }),
   photoTimeSlots: z.array(z.string()).default([]),
   imageTimeSlots: z.array(z.string()).default([]),
-  consultTimeSlots: z.array(z.string()).default([]),
   ig: z.string().optional(),
   studentInfo: z.string().optional(),
   promoteCode: z.string().optional(),
@@ -51,7 +48,6 @@ type FormValues = z.infer<typeof formSchema>;
 const timeOptions = {
   photo: ["上午 (9:00-12:00)", "下午 (13:00-15:00)", "下午 (15:00-18:00)"],
   image: ["上午 (9:00-12:00)", "下午 (13:00-15:00)", "下午 (15:00-18:00)"],
-  consult: ["下午 (13:00-15:00)", "下午 (15:00-17:00)"],
 };
 
 export const ContactForm = () => {
@@ -87,7 +83,6 @@ export const ContactForm = () => {
       package: [],
       photoTimeSlots: [],
       imageTimeSlots: [],
-      consultTimeSlots: [],
       ig: "",
       studentInfo: "",
       promoteCode: "",
@@ -142,8 +137,8 @@ export const ContactForm = () => {
     const studentDiscount = studentInput
       ? nonMakeupPackages.length * 200
       : 0;
-    // 優惠碼：全訂單一次 NT$100
-    const promoDiscount = isPromoValid ? 100 : 0;
+    // 優惠碼：全訂單一次 NT$200
+    const promoDiscount = isPromoValid ? 200 : 0;
 
     const total =
       base + makeupPrice - igDiscount - studentDiscount - promoDiscount;
@@ -186,9 +181,6 @@ export const ContactForm = () => {
     const imageSlotsText = data.imageTimeSlots.length
       ? data.imageTimeSlots.join(", ")
       : "無";
-    const consultSlotsText = data.consultTimeSlots.length
-      ? data.consultTimeSlots.join(", ")
-      : "無";
 
     emailjs
       .send(
@@ -201,7 +193,6 @@ export const ContactForm = () => {
           package: data.package.join(", "),
           photoTimeSlots: photoSlotsText,
           imageTimeSlots: imageSlotsText,
-          consultTimeSlots: consultSlotsText,
           ig: data.ig || "無",
           studentInfo: data.studentInfo || "無",
           promoteCode: data.promoteCode || "無",
@@ -233,7 +224,6 @@ export const ContactForm = () => {
             package: data.package.join(", "),
             photoTimeSlots: data.photoTimeSlots.join(", "),
             imageTimeSlots: data.imageTimeSlots.join(", "),
-            consultTimeSlots: data.consultTimeSlots.join(", "),
             ig: data.ig || "",
             studentInfo: data.studentInfo || "",
             promoteCode: data.promoteCode || "",
@@ -441,44 +431,6 @@ export const ContactForm = () => {
               )}
             />
           )}
-          {selectedPackages.includes("職涯諮詢") && (
-            <FormField
-              control={form.control}
-              name="consultTimeSlots"
-              render={() => (
-                <FormItem>
-                  <FormLabel>職涯諮詢時段</FormLabel>
-                  <div className="grid gap-2">
-                    {timeOptions.consult.map((slot) => (
-                      <FormField
-                        key={slot}
-                        control={form.control}
-                        name="consultTimeSlots"
-                        render={({ field }) => (
-                          <FormItem className="flex items-center space-x-3">
-                            <FormControl>
-                              <input
-                                type="checkbox"
-                                checked={field.value.includes(slot)}
-                                onChange={(e) => {
-                                  const checked = e.target.checked;
-                                  const newValue = checked
-                                    ? [...field.value, slot]
-                                    : field.value.filter((v) => v !== slot);
-                                  field.onChange(newValue);
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">{slot}</FormLabel>
-                          </FormItem>
-                        )}
-                      />
-                    ))}
-                  </div>
-                </FormItem>
-              )}
-            />
-          )}
 
           {/* IG 折扣欄 */}
           <FormField
@@ -519,7 +471,7 @@ export const ContactForm = () => {
                   <Input placeholder="請輸入優惠碼" {...field} />
                 </FormControl>
                 {isPromoValid === true && (
-                  <p className="text-green-600 text-sm mt-1">✅ 優惠碼正確，可折抵 NT$100！</p>
+                  <p className="text-green-600 text-sm mt-1">✅ 優惠碼正確，可折抵 NT$200！</p>
                 )}
                 {isPromoValid === false && (
                   <p className="text-red-600 text-sm mt-1">❌ 優惠碼無效</p>

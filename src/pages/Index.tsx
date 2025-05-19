@@ -191,7 +191,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {/* Service 1 */}
             <div className="service-card relative hover-lift">
               <Card className="border-t-4 border-t-primary/50 h-full">
@@ -267,41 +267,6 @@ const Index = () => {
                   </div>
                 </CardContent>
               </Card>
-            </div>
-
-            {/* Service 3 */}
-            <div className="service-card relative hover-lift">
-            <Card className="border-t-4 border-t-secondary/50 h-full">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary/50 to-transparent"></div>
-              <CardHeader className="text-center pt-8">
-                <div className="mx-auto bg-secondary/10 w-16 h-16 flex items-center justify-center rounded-full mb-4">
-                  <Users className="h-8 w-8 text-secondary" />
-                </div>
-                <CardTitle className="text-2xl">職涯諮詢</CardTitle>
-                <CardDescription>北科學長姐團隊專業指導</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="font-medium">諮詢時間</span>
-                  <span>20 分鐘</span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="font-medium">服務地點</span>
-                  <span>北科大</span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="font-medium">日期</span>
-                  <span>6/6</span>
-                </div>
-                <div className="flex flex-col items-end font-bold text-lg">
-                  <div className="line-through text-gray-500">NT$800</div>
-                  <div className="text-red-600">優惠後最低 NT$500</div>
-                </div>
-                <div className="text-sm text-right text-gray-600 italic">
-                  * 須預付訂金 NT$500 以保留名額
-                </div>
-              </CardContent>
-            </Card>
             </div>
           </div>
         </div>
@@ -383,51 +348,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* 北科學長姐團隊 */}
-            <Card className="hover-lift group relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="bg-secondary/10 p-2 rounded-full">
-                    <Users className="h-5 w-5 text-secondary" />
-                  </div>
-                  北科學長姐團隊
-                </CardTitle>
-                <CardDescription>職涯諮詢團隊</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">🎓</span>
-                    <span>大學實習版｜職涯探索X求職分享</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">✏️</span>
-                    <span>實習資訊｜職涯諮詢｜履歷撰寫</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">💼</span>
-                    <span>LinkedIn 經營 ｜模擬面試</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-secondary mr-2">🏷️</span>
-                    <span>#實習 #找工作 #NTUT</span>
-                  </li>
-                </ul>
-                <div className="mt-4">
-                  <a
-                    href="https://www.instagram.com/ntut_intern/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary underline hover:text-primary/80 transition-colors"
-                  >
-                    📸 Instagram：@ntut_intern
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-            
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* 有點閒｜影像工作室 */}
             <Card className="hover-lift group relative">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
